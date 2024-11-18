@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MenuIcon } from "@heroicons/react/solid";
+import "./TodoList.css";
 
 function TodoList({ todos, onDelete, onToggle, onRename }) {
   const [isMenuVisible, setIsMenuVisible] = useState(null);
@@ -8,34 +9,31 @@ function TodoList({ todos, onDelete, onToggle, onRename }) {
 
   const handleRename = (id) => {
     if (newTaskName.trim() === "") return;
-    onRename(id, newTaskName); // Call the onRename function passed as a prop
+    onRename(id, newTaskName);
     setNewTaskName("");
-    setTaskToRename(""); // Close rename input after saving
+    setTaskToRename("");
   };
 
   return (
-    <div>
+    <div className="todo-container">
       {todos.map((todo) => (
-        <div
-          key={todo.id}
-          className="flex items-center justify-between bg-gray-800 text-white p-2 rounded-lg my-2 shadow-md"
-        >
+        <div key={todo.id} className="todo-item-container">
           {/* Menu button */}
           <div
-            className="relative"
+            className="menu-container"
             onClick={() =>
               setIsMenuVisible(isMenuVisible === todo.id ? null : todo.id)
             }
           >
-            <button className="p-2">
-              <MenuIcon className="h-6 w-6 text-white" /> {/* Icon here */}
+            <button className="menu-button">
+              <MenuIcon className="menu-icon" />
             </button>
 
             {/* Dropdown Menu */}
             {isMenuVisible === todo.id && (
-              <div className="absolute left-0 bg-gray-700 p-2 rounded-lg mt-2">
+              <div className="dropdown-menu">
                 <div
-                  className="cursor-pointer text-white mb-2"
+                  className="menu-option rename-option"
                   onClick={() => {
                     setTaskToRename(todo.id);
                     setNewTaskName(todo.text);
@@ -44,7 +42,7 @@ function TodoList({ todos, onDelete, onToggle, onRename }) {
                   Rename
                 </div>
                 <div
-                  className="cursor-pointer text-red-500"
+                  className="menu-option delete-option"
                   onClick={() => onDelete(todo.id)}
                 >
                   Delete
@@ -55,30 +53,32 @@ function TodoList({ todos, onDelete, onToggle, onRename }) {
 
           {/* Task text and checkbox */}
           {taskToRename === todo.id ? (
-            <div className="flex items-center">
+            <div className="rename-container">
               <input
                 type="text"
                 value={newTaskName}
                 onChange={(e) => setNewTaskName(e.target.value)}
                 onBlur={() => handleRename(todo.id)}
-                className="bg-transparent text-white border-b-2 border-gray-400 mr-2"
+                className="rename-input"
               />
               <button
                 onClick={() => handleRename(todo.id)}
-                className="text-white"
+                className="save-button"
               >
                 Save
               </button>
             </div>
           ) : (
-            <div className="flex items-center">
+            <div className="task-container">
               <input
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => onToggle(todo.id)}
-                className="mr-4"
+                className="task-checkbox"
               />
-              <span className={todo.completed ? "line-through" : ""}>
+              <span
+                className={`task-text ${todo.completed ? "completed" : ""}`}
+              >
                 {todo.text}
               </span>
             </div>
