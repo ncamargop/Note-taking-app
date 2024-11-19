@@ -512,6 +512,7 @@ export default class BasicLayout extends React.PureComponent {
             {this.renderEditButtons(note)}
           </div>
           {this.renderColorPicker(note, textColor)}
+          <section className="drag-handle"></section>
         </div>
       );
     });
@@ -533,7 +534,7 @@ export default class BasicLayout extends React.PureComponent {
           autoSize={true}
           preventCollision={false}
           useCSSTransforms={true}
-          draggableHandle={"drag-handle"}
+          draggableHandle=".drag-handle"
         >
           {this.generateDOM()}
         </ReactGridLayout>
