@@ -18,7 +18,7 @@ function App() {
   }, []);
 
   const handleAddTodo = () => {
-    if (!newTodo) return;
+    //if (!newTodo) return;
 
     const newTodoItem = {
       id: Date.now(),
