@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { update } from "lodash";
 import RGL, { WidthProvider } from "react-grid-layout";
 import React from "react";
 import {
@@ -38,11 +38,47 @@ export default class BasicLayout extends React.PureComponent {
     };
   }
 
+  // Fetch notes from the backend
+  componentDidMount() {
+    fetch("http://localhost:3001/dashnotes") // Ensure the correct backend URL
+      .then((response) => response.json()) // Parse the JSON response
+      .then((data) => {
+        // Create layout based on the fetched notes
+        const newLayout = data.map((note) => ({
+          i: note.i,
+          x: note.x, // Default x position if not present
+          y: note.y, // Default y position if not present
+          w: note.w, // Default width if not present
+          h: note.h, // Default height if not present
+        }));
+        this.setState({
+          notes: data, // Update notes state
+          layout: newLayout, // Update layout state based on the fetched notes
+        });
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the notes:", error); // Log any errors
+      });
+  }
+
   onLayoutChange = (layout) => {
     // Update notes with new positions and sizes from layout
     const updatedNotes = this.state.notes.map((note) => {
       const layoutItem = layout.find((item) => item.i === note.i);
       if (layoutItem) {
+        fetch("http://localhost:3001/dashnotes/updatePos/" + note.i, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...layoutItem,
+            x: layoutItem.x,
+            y: layoutItem.y,
+            w: layoutItem.w,
+            h: layoutItem.h,
+          }),
+        });
         return {
           ...note,
           x: layoutItem.x,
@@ -66,15 +102,23 @@ export default class BasicLayout extends React.PureComponent {
       const newNoteObj = {
         i: `n${Date.now()}`, // Unique ID using timestamp
         content: newNote.trim(), // The content of the note
-        x: 0, // Default pos
-        y: 0, // Default pos
+        x: 3, // Default pos
+        y: 3, // Default pos
         w: 2, // Default width
         h: 2, // Default height
-        image: uploadedImage ? URL.createObjectURL(uploadedImage) : null, // If an image exists, associate it with the note
+        image: uploadedImage ? uploadedImage : null, // If an image exists, associate it with the note
         color: "#ffffff", // Default text color
         showColorPicker: false, // Initially hide color picker
         backgroundColor: "#292929",
       };
+
+      fetch("http://localhost:3001/dashnotes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newNoteObj),
+      });
 
       this.setState((prevState) => ({
         notes: [...prevState.notes, newNoteObj],
@@ -96,22 +140,36 @@ export default class BasicLayout extends React.PureComponent {
     }
   };
 
-  handleImageUpload = (e) => {
+  handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Image file check
       if (file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          // Set the base64 image data for preview and store the file for further processing
-          this.setState({
-            newImage: reader.result,
-            uploadedImage: file,
-          });
-        };
-        reader.readAsDataURL(file); // Read image as base64 string
-      } else {
-        alert("Please upload a valid image file :)");
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+          // Image upload to imgBB - limited.
+          const apiKey = "fe619b58bd51b5c886a7692d838aa875";
+          const response = await fetch(
+            `https://api.imgbb.com/1/upload?key=${apiKey}`,
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          const result = await response.json();
+
+          if (result.success) {
+            this.setState({
+              newImage: result.data.url,
+              uploadedImage: result.data.url, // Store the uploaded image URL
+            });
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          alert("An error occurred while uploading the image.");
+        }
       }
     }
   };
@@ -131,6 +189,15 @@ export default class BasicLayout extends React.PureComponent {
         ? { ...n, content: editedNoteText, image: editedNoteImage }
         : n
     );
+
+    fetch("http://localhost:3001/dashnotes/updateText/" + note.i, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ i: note.i, content: editedNoteText }),
+    });
+
     this.setState({
       notes: updatedNotes,
       editingNoteId: null, // Reset editing mode
@@ -164,7 +231,7 @@ export default class BasicLayout extends React.PureComponent {
     });
   };
 
-  handleColorSelect = (noteId, color) => {
+  handleColorSelect = (noteId, color, textColor) => {
     this.setState((prevState) => {
       const updatedNotes = prevState.notes.map((note) =>
         note.i === noteId
@@ -176,6 +243,18 @@ export default class BasicLayout extends React.PureComponent {
           : note
       );
       return { notes: updatedNotes };
+    });
+
+    fetch("http://localhost:3001/dashnotes/updateColors/" + noteId, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        i: noteId,
+        backgroundColor: color,
+        color: textColor,
+      }),
     });
   };
 
@@ -194,6 +273,14 @@ export default class BasicLayout extends React.PureComponent {
       notes: updatedNotes,
       showDeleteModal: false, // Hide the popup
       noteToDelete: null, // Clear the note to delete
+    });
+
+    console.log(noteToDelete.i);
+    fetch("http://localhost:3001/dashnotes/" + noteToDelete.i, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   };
 
@@ -314,7 +401,7 @@ export default class BasicLayout extends React.PureComponent {
     );
   }
 
-  renderColorPicker(note) {
+  renderColorPicker(note, textColor) {
     if (!note.showColorPicker) return null;
     const colorOptions = ["#ed5c53", "#84b6f4", "#77dd77", "#292929"]; // Pre-established colors, TODO: see better options
     return (
@@ -322,7 +409,7 @@ export default class BasicLayout extends React.PureComponent {
         {colorOptions.map((color) => (
           <button
             key={color}
-            onClick={() => this.handleColorSelect(note.i, color)}
+            onClick={() => this.handleColorSelect(note.i, color, textColor)}
             style={{
               backgroundColor: color,
             }}
@@ -415,7 +502,7 @@ export default class BasicLayout extends React.PureComponent {
             )}
             {this.renderEditButtons(note)}
           </div>
-          {this.renderColorPicker(note)}
+          {this.renderColorPicker(note, textColor)}
         </div>
       );
     });

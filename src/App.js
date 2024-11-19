@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoList from "./components/TodoList";
 import Dashboard from "./components/Dashboard";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
@@ -9,6 +9,14 @@ function App() {
   const [newTodo, setNewTodo] = useState("");
   const [showDashboard, setShowDashboard] = useState(false);
 
+  // Fetch ALL TO-DOs on load from backend
+  useEffect(() => {
+    fetch("http://localhost:3001/tasks")
+      .then((response) => response.json())
+      .then((data) => setTodos(data))
+      .catch((error) => console.error("Error fetching tasks:", error));
+  }, []);
+
   const handleAddTodo = () => {
     if (!newTodo) return;
 
@@ -17,12 +25,28 @@ function App() {
       text: newTodo,
       completed: false,
     };
+
+    fetch("http://localhost:3001/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTodoItem),
+    });
+
     setTodos([...todos, newTodoItem]);
     setNewTodo("");
   };
 
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+
+    fetch("http://localhost:3001/tasks/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const handleToggleTodo = (id) => {
@@ -31,6 +55,15 @@ function App() {
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
+
+    const todo = todos.find((todo) => todo.id === id);
+    fetch("http://localhost:3001/tasks/update/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...todo, completed: !todo.completed }),
+    });
   };
 
   const handleRename = (id, newTaskName) => {
@@ -39,6 +72,16 @@ function App() {
         todo.id === id ? { ...todo, text: newTaskName } : todo
       )
     );
+
+    const todo = todos.find((todo) => todo.id === id);
+    console.log("LOL: " + JSON.stringify(todo));
+    fetch("http://localhost:3001/tasks/rename/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...todo, text: newTaskName }),
+    });
   };
 
   const toggleView = () => {
