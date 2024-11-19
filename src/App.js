@@ -11,7 +11,7 @@ function App() {
 
   // Fetch ALL TO-DOs on load from backend
   useEffect(() => {
-    fetch("https://autorack.proxy.rlwy.net:3000/tasks")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks`)
       .then((response) => response.json())
       .then((data) => setTodos(data))
       .catch((error) => console.error("Error fetching tasks:", error));
@@ -26,7 +26,7 @@ function App() {
       completed: false,
     };
 
-    fetch("https://autorack.proxy.rlwy.net:3000/tasks", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ function App() {
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
 
-    fetch("http://autorack.proxy.rlwy.net:3000/tasks/" + id, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks/` + id, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ function App() {
     );
 
     const todo = todos.find((todo) => todo.id === id);
-    fetch("http://autorack.proxy.rlwy.net:3000/tasks/update/" + id, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks/update/" + id`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ function App() {
 
     const todo = todos.find((todo) => todo.id === id);
     console.log("LOL: " + JSON.stringify(todo));
-    fetch("http://autorack.proxy.rlwy.net:3000/tasks/rename/" + id, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/tasks/rename/` + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
