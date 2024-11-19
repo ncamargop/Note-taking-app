@@ -40,7 +40,7 @@ export default class BasicLayout extends React.PureComponent {
 
   // Fetch notes from the backend
   componentDidMount() {
-    fetch("http://localhost:3001/dashnotes") // Ensure the correct backend URL
+    fetch("http://autorack.proxy.rlwy.net:3000/dashnotes") // Ensure the correct backend URL
       .then((response) => response.json()) // Parse the JSON response
       .then((data) => {
         // Create layout based on the fetched notes
@@ -66,19 +66,22 @@ export default class BasicLayout extends React.PureComponent {
     const updatedNotes = this.state.notes.map((note) => {
       const layoutItem = layout.find((item) => item.i === note.i);
       if (layoutItem) {
-        fetch("http://localhost:3001/dashnotes/updatePos/" + note.i, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...layoutItem,
-            x: layoutItem.x,
-            y: layoutItem.y,
-            w: layoutItem.w,
-            h: layoutItem.h,
-          }),
-        });
+        fetch(
+          "http://autorack.proxy.rlwy.net:3000/dashnotes/updatePos/" + note.i,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...layoutItem,
+              x: layoutItem.x,
+              y: layoutItem.y,
+              w: layoutItem.w,
+              h: layoutItem.h,
+            }),
+          }
+        );
         return {
           ...note,
           x: layoutItem.x,
@@ -112,7 +115,7 @@ export default class BasicLayout extends React.PureComponent {
         backgroundColor: "#292929",
       };
 
-      fetch("http://localhost:3001/dashnotes", {
+      fetch("http://autorack.proxy.rlwy.net:3000/dashnotes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -190,13 +193,16 @@ export default class BasicLayout extends React.PureComponent {
         : n
     );
 
-    fetch("http://localhost:3001/dashnotes/updateText/" + note.i, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ i: note.i, content: editedNoteText }),
-    });
+    fetch(
+      "http://autorack.proxy.rlwy.net:3000/dashnotes/updateText/" + note.i,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ i: note.i, content: editedNoteText }),
+      }
+    );
 
     this.setState({
       notes: updatedNotes,
@@ -245,17 +251,20 @@ export default class BasicLayout extends React.PureComponent {
       return { notes: updatedNotes };
     });
 
-    fetch("http://localhost:3001/dashnotes/updateColors/" + noteId, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        i: noteId,
-        backgroundColor: color,
-        color: textColor,
-      }),
-    });
+    fetch(
+      "http://autorack.proxy.rlwy.net:3000/dashnotes/updateColors/" + noteId,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          i: noteId,
+          backgroundColor: color,
+          color: textColor,
+        }),
+      }
+    );
   };
 
   handleImageClick = (imageSrc) => {
@@ -276,7 +285,7 @@ export default class BasicLayout extends React.PureComponent {
     });
 
     console.log(noteToDelete.i);
-    fetch("http://localhost:3001/dashnotes/" + noteToDelete.i, {
+    fetch("http://autorack.proxy.rlwy.net:3000/dashnotes/" + noteToDelete.i, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
