@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
-import TodoList from './components/TodoList';
-import Dashboard from './components/Dashboard'; // New dashboard component
+import React, { useState, useEffect } from "react";
+import TodoList from "./components/TodoList";
+import Dashboard from "./components/Dashboard";
+import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
+import "./index.css";
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [newTodo, setNewTodo] = useState('');
-  const [showDashboard, setShowDashboard] = useState(false); // State to toggle between views
+  const [newTodo, setNewTodo] = useState("");
+  const [showDashboard, setShowDashboard] = useState(false);
+
+  // Fetch ALL TO-DOs on load from backend
+  useEffect(() => {
+    fetch("http://localhost:3001/tasks")
+      .then((response) => response.json())
+      .then((data) => setTodos(data))
+      .catch((error) => console.error("Error fetching tasks:", error));
+  }, []);
 
   const handleAddTodo = () => {
     if (!newTodo) return;
@@ -15,12 +25,28 @@ function App() {
       text: newTodo,
       completed: false,
     };
+
+    fetch("http://localhost:3001/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTodoItem),
+    });
+
     setTodos([...todos, newTodoItem]);
-    setNewTodo('');
+    setNewTodo("");
   };
 
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+
+    fetch("http://localhost:3001/tasks/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const handleToggleTodo = (id) => {
@@ -29,6 +55,15 @@ function App() {
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
+
+    const todo = todos.find((todo) => todo.id === id);
+    fetch("http://localhost:3001/tasks/update/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...todo, completed: !todo.completed }),
+    });
   };
 
   const handleRename = (id, newTaskName) => {
@@ -37,6 +72,16 @@ function App() {
         todo.id === id ? { ...todo, text: newTaskName } : todo
       )
     );
+
+    const todo = todos.find((todo) => todo.id === id);
+    console.log("LOL: " + JSON.stringify(todo));
+    fetch("http://localhost:3001/tasks/rename/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...todo, text: newTaskName }),
+    });
   };
 
   const toggleView = () => {
@@ -44,44 +89,43 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 relative">
-      {/* Header only shows when we're NOT on the Dashboard */}
+    <div className="relative min-h-screen">
+      {" "}
       {!showDashboard && (
         <>
-          <h1 className="text-4xl font-bold text-white-400 mb-6">To-Do List</h1>
-          <div className="flex space-x-2 mb-4">
-            <input
-              type="text"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              className="p-2 rounded-lg border-2 border-gray-300 bg-black text-white"
-              placeholder="Add a new task"
-            />
-            <button
-              onClick={handleAddTodo}
-              className="bg-green-800 text-white p-2 rounded-lg hover:bg-green-900"
-            >
-              Add Task
-            </button>
-          </div>
+          <h1 className="header-todolist">To-Do List</h1>
+          <input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            className="add-task-input"
+            placeholder="Add a new task"
+          />
+          <button onClick={handleAddTodo} className="add-task-button">
+            Add Task
+          </button>
           <TodoList
             todos={todos}
             onDelete={handleDeleteTodo}
             onToggle={handleToggleTodo}
-            onRename={handleRename} // Passing handleRename to TodoList
+            onRename={handleRename}
           />
         </>
       )}
-
       {/* Dashboard content */}
       {showDashboard && <Dashboard />}
-
       {/* Arrow button to switch between Todo list and Dashboard */}
       <div
-        className={`absolute ${showDashboard ? 'left-4' : 'right-4'} top-1/2 transform -translate-y-1/2`}
+        className={`arrow-container ${showDashboard ? "left-4" : "right-4"}`}
       >
-        <button onClick={toggleView} className="p-2 bg-gray-700 rounded-full">
-          <span className="text-xl">{showDashboard ? '←' : '→'}</span> {/* Dynamic arrow */}
+        <button onClick={toggleView} className="left-right-buttons">
+          <span>
+            {showDashboard ? (
+              <MdKeyboardArrowLeft size={30} color="white" />
+            ) : (
+              <MdKeyboardArrowRight size={30} color="white" />
+            )}
+          </span>
         </button>
       </div>
     </div>

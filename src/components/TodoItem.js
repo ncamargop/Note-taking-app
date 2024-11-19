@@ -1,28 +1,21 @@
 import React from "react";
+import "./TodoItem.css";
 
-// TODO: Move items dragging, more configs.
 function TodoItem({ todo, onDelete, onToggle }) {
   return (
-    <div className="flex items-center justify-between bg-black-800 text-white p-4 my-2 rounded-lg shadow-lg">
-      <div className="flex items-center">
+    <div className="todo-item">
+      <div className="todo-content">
         <input
           type="checkbox"
           checked={todo.completed}
           onChange={() => onToggle(todo.id)}
-          className="mr-4"
+          className="todo-checkbox"
         />
-        <span
-          className={`text-lg ${
-            todo.completed ? "line-through text-gray-400" : ""
-          }`}
-        >
+        <span className={`todo-text ${todo.completed ? "completed" : ""}`}>
           {todo.text}
         </span>
       </div>
-      <button
-        onClick={() => onDelete(todo.id)}
-        className="bg-red-500 text-white p-2 rounded-full hover:bg-red-100"
-      >
+      <button onClick={() => onDelete(todo.id)} className="delete-button">
         X
       </button>
     </div>
