@@ -444,7 +444,7 @@ body {
 
   /* Plus Button */
   .dash-plus-button {
-    font-size: 30px;
+    font-size: 60px;
     height: 30px;
     width: 30px;
   }
@@ -507,7 +507,40 @@ body {
   }
 
   .react-grid-item .text {
+    margin-top: 130px;
     font-size: 16px;
     margin-top: 15px;
+  }
+
+  .note-content {
+    margin-top: 50px;
+  }
+
+  /* Edit and delete buttons */
+  .edit-delete-buttons {
+    margin-top: 8px;
+    margin-right: 8px;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    z-index: 9999;
+  }
+
+  .save-button,
+  .edit-button,
+  .delete-button {
+    display: none;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: small;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10%;
+    transition: background-color 0.2s;
+    max-height: 50px;
+    z-index: 9999;
   }
 }
