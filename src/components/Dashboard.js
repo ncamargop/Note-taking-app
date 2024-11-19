@@ -14,7 +14,7 @@ export default class BasicLayout extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     onLayoutChange: function () {},
-    cols: 4,
+    cols: window.innerWidth <= 768 ? 2 : 4,
   };
 
   // Props for notes

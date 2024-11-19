@@ -419,3 +419,95 @@ body {
 .react-grid-item > .react-resizable-handle {
   z-index: 10;
 }
+
+/*-----------------------------------*/
+
+/*---------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------*/
+/*----------------------------- FOR MOBILES LAYOUT --------------------------------------*/
+/*---------------------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------*/
+
+/* For devices with a maximum width of 480px (phones and smaller screens) */
+@media (max-width: 480px) {
+  /* General Body Styles */
+  body {
+    padding: 10px;
+    margin-bottom: 80px;
+  }
+
+  /* Dashboard Header */
+  .dash-header {
+    font-size: 200%; /* Even smaller font size for mobile screens */
+    margin-top: 20%;
+  }
+
+  /* Plus Button */
+  .dash-plus-button {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+  }
+
+  /* Text Input */
+  .input-text {
+    font-size: 16px;
+    min-width: 250px;
+    max-width: 400px;
+  }
+
+  /* Upload Section */
+  .upload-section {
+    margin-top: 10px;
+  }
+
+  .upload-image-button {
+    padding: 8px;
+  }
+
+  /* Save Note Button */
+  .save-note-button {
+    font-size: 16px;
+    padding: 8px;
+    margin-top: 20px;
+  }
+
+  /* Color Picker */
+  .color-options-menu {
+    width: 30px;
+    height: 130px;
+    position: absolute;
+  }
+
+  .color-option-button1 {
+    width: 30px;
+    height: 10px;
+  }
+
+  /* Grid Layout */
+  .react-grid-layout {
+    display: block;
+    position: sticky;
+    margin: 0 auto;
+    margin-top: 80px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .react-grid-item {
+    width: 80%;
+    margin: 5px 0;
+    min-height: 100px;
+    min-width: 150px;
+  }
+
+  .react-grid-item img {
+    width: 90%;
+    margin-top: 15px;
+  }
+
+  .react-grid-item .text {
+    font-size: 16px;
+    margin-top: 15px;
+  }
+}

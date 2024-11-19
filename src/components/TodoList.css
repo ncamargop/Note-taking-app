@@ -105,9 +105,49 @@
 
 .task-text {
   font-size: 16px;
+  word-break: break-all;
 }
 
 .task-text.completed {
   text-decoration: line-through;
   color: gray;
+}
+
+/* ========================== MEDIA QUERIES =================================== */
+
+/* For mobile devices (default mobile-first approach) */
+@media (max-width: 599px) {
+  .todo-item-container {
+    width: 60%; /* Make to-do items take full width on mobile */
+    padding: 12px; /* Adjust padding for smaller screens */
+  }
+
+  .task-text {
+    font-size: 14px; /* Reduce font size on mobile */
+    word-break: break-all;
+  }
+
+  .menu-icon {
+    height: 20px;
+    width: 20px; /* Make the menu icon smaller */
+  }
+
+  /* Dropdown menu */
+  .dropdown-menu {
+    top: 30px; /* Adjust dropdown position */
+    left: -100px; /* Position the dropdown a little to the left on mobile */
+  }
+
+  .menu-option {
+    padding: 6px; /* Reduce padding in dropdown */
+  }
+
+  .rename-input {
+    font-size: 14px; /* Reduce the font size of the input on mobile */
+    width: 150px; /* Limit width of input on mobile */
+  }
+
+  .save-button {
+    font-size: 14px; /* Smaller button text on mobile */
+  }
 }

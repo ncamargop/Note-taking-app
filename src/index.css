@@ -1,22 +1,27 @@
+/* Global body styling */
 body {
   padding: 20px;
   background-color: black;
   margin-bottom: 150px;
   height: 100%;
+  font-family: system-ui, sans-serif; /* Make the font consistent */
 }
 
+/* Content container */
 #content {
   width: 100%;
 }
 
+/* Header styling */
 .header-todolist {
   text-align: center;
   font-weight: bold;
   color: azure;
-  font-family: system-ui;
   font-size: 50px;
+  margin-bottom: 20px; /* Added spacing below the header */
 }
 
+/* Left and right buttons styling */
 .left-right-buttons {
   background: none;
   border: none;
@@ -33,24 +38,24 @@ body {
   background-color: rgb(61, 61, 61);
 }
 
+/* Input for adding tasks */
 .add-task-input {
   display: block;
-  font-family: system-ui;
   margin: 0 auto;
-  display: block;
   margin-top: 30px;
   min-width: 400px;
-  box-sizing: border-box;
   max-width: 600px;
+  width: 100%;
+  padding-right: 40px;
   background-color: black;
   font-size: 20px;
   font-weight: lighter;
-  width: 100%;
-  padding-right: 40px;
   border: none;
   color: white;
+  box-sizing: border-box;
 }
 
+/* Button for adding tasks */
 .add-task-button {
   background-color: rgba(70, 70, 70, 0.199);
   color: white;
@@ -66,13 +71,13 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-bottom: 100px;
 }
 
 .add-task-button:hover {
   background-color: rgba(3, 92, 0, 0.712);
 }
 
+/* Arrow container styling */
 .arrow-container {
   position: absolute;
   top: 50%;
@@ -80,6 +85,45 @@ body {
   z-index: 10;
 }
 
+/* Right arrow positioning */
 .right-4 {
   right: 20px;
+}
+
+/*======================== MEDIA QUERIES ================================*/
+
+/* For mobile devices (default mobile-first approach) */
+@media (max-width: 599px) {
+  .header-todolist {
+    font-size: 30px; /* Reduce header size for small screens */
+  }
+
+  .add-task-input {
+    min-width: 250px; /* Make input smaller on mobile */
+    max-width: 100%; /* Allow input to be full width on small screens */
+    min-height: 30px;
+  }
+
+  .add-task-button {
+    width: 120px; /* Make the button smaller on mobile */
+    height: 45px; /* Adjust button size */
+    font-size: 18px; /* Adjust text size */
+  }
+
+  /* Adjust arrow container positioning for mobile */
+  .arrow-container {
+    top: 80px; /* Make the arrow a little closer on mobile */
+  }
+
+  .left-right-buttons {
+    background: none;
+    border: none;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+  }
 }
