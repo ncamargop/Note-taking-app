@@ -533,7 +533,7 @@ export default class BasicLayout extends React.PureComponent {
           autoSize={true}
           preventCollision={false}
           useCSSTransforms={true}
-          draggableHandle="drag-handle"
+          draggableHandle={"drag-handle"}
         >
           {this.generateDOM()}
         </ReactGridLayout>

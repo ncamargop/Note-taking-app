@@ -598,9 +598,9 @@ body {
 
   .drag-handle {
     position: absolute;
-    margin-top: 90px;
+    margin-top: 10%;
     width: 20%;
     height: 20%;
-    bottom: 5%;
+    bottom: 30%;
   }
 }
