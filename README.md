@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# THING-U: Note taking app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Simple react frontend for the note-taking Thing-U app, includes a basic todo-list with CRUD functionalities and a note dashboard inspired in Google Keep, for larger notes with posibility of uploading images, and editing the notes color, size and position.
+If running this project locally, it relies on another repository for handling data backup that needs to run simultaneously. You can find it [here](https://github.com/ncamargop/note-taking-app-backend).
 
-## Available Scripts
 
-In the project directory, you can run:
+## Table of Contents
+- [Demo](#demo)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Preview](#preview)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Demo
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The app frontend and backend is fully deployed on railway and vercel. You can test the demo [here](https://thingu.netlify.app/).
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ncamargop/Note-taking-app-front.git
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. In the project directory, install dependencies by running:
+   ```bash
+   npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Run the frontend server with:
+   ```bash
+   npm start
 
-### `npm run eject`
+4. Visit http://localhost:3000 to view the application.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+After installing and starting the application, you can:
 
-## Learn More
+- Add new to-do's to the list.
+- Change to-do's text, delete them or mark them as completed.
+- Add large text notes with or without images to the dashboard section.
+- Edit the text, background color, size or position on the board of the dashboard notes.
+- Delete dashboard notes.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Preview
 
-### Making a Progressive Web App
+![note-taking (1)](https://github.com/user-attachments/assets/7c6df8db-4017-4f8a-89a8-b846bb289f50)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![note-taking (2)](https://github.com/user-attachments/assets/8c2d1321-b591-44f9-9760-4d19d11f02d2)
 
-### Advanced Configuration
+![note-taking (3)](https://github.com/user-attachments/assets/20e13515-39cf-4c39-8d18-31b5d4592c77)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
